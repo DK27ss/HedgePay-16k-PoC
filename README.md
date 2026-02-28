@@ -1,4 +1,4 @@
-# HedgePay-16k-PoC
+<img width="1040" height="116" alt="image" src="https://github.com/user-attachments/assets/430b8526-c8e4-46b4-806e-e53875db1702" /># HedgePay-16k-PoC
 
 >| Field | Value |
 >|-------|-------|
@@ -70,18 +70,31 @@ Attacker EOA
     v
 [5] Withdraw ~25 BNB profit to attacker EOA
 ```
+Attack TX : https://app.blocksec.com/phalcon/explorer/tx/bsc/0x5f2ea6cb43d14986188fa2f474d9e22502fa95cc76cab72cd6ba1ba146ed137f
 
 1. **Flash swap initiation** — The attacker calls `PancakePair.swap()` on the BTCB/HPAY pair, requesting ~1.17M HPAY with a non-empty `data` parameter to trigger a flash swap callback.
 
-2. **HPAY transfer tax** — HPAY is a fee-on-transfer token (~4%), of the 1.17M borrowed, only ~1.12M arrives at the exploit contract, the rest is distributed as fees to the token contract and a fee processor.
+<img width="1398" height="199" alt="image" src="https://github.com/user-attachments/assets/120e37d8-8349-422e-a065-7bd45c3826e5" />
 
-3. **Single stake** — The exploit contract approves the staking proxy and calls `stake(1,126,068 HPAY)`, the staking contract takes a ~2% fee, so ~1,103,546 HPAY is recorded as the user staked balance.
+3. **HPAY transfer tax** — HPAY is a fee-on-transfer token (~4%), of the 1.17M borrowed, only ~1.12M arrives at the exploit contract, the rest is distributed as fees to the token contract and a fee processor.
 
-4. **Repeated forceExit() (the bug)** — The exploit calls `forceExit()` 50 times in a loop, because the staking contract never sets `userStake[attacker] = 0`, each call transfers 1,103,546 HPAY from the staking pool to the exploit contract, this drains ~55M HPAY from the pool, far exceeding the original deposit.
+<img width="1344" height="159" alt="image" src="https://github.com/user-attachments/assets/9129013b-7763-4328-95b3-a2b932acdd8f" />
 
-5. **Flash swap repayment** — The exploit transfers ~1.3M HPAY back to the pair to satisfy the PancakeSwap K invariant (with a buffer for the 0.25% swap fee and the 4% HPAY transfer tax).
+4. **Single stake** — The exploit contract approves the staking proxy and calls `stake(1,126,068 HPAY)`, the staking contract takes a ~2% fee, so ~1,103,546 HPAY is recorded as the user staked balance.
 
-6. **Profit extraction** — After the flash swap settles (pair lock released), the remaining ~57M HPAY is swapped via the PancakeSwap router through the path `HPAY -> BTCB -> WBNB`, netting ~25 BNB.
+<img width="1567" height="123" alt="image" src="https://github.com/user-attachments/assets/66aa45e5-ae09-4dcb-b004-053610c97a7e" />
+
+5. **Repeated forceExit() (the bug)** — The exploit calls `forceExit()` 50 times in a loop, because the staking contract never sets `userStake[attacker] = 0`, each call transfers 1,103,546 HPAY from the staking pool to the exploit contract, this drains ~55M HPAY from the pool, far exceeding the original deposit.
+
+<img width="812" height="458" alt="image" src="https://github.com/user-attachments/assets/eeacebdd-4ffb-45c5-873e-443fb0e638d1" />
+
+6. **Flash swap repayment** — The exploit transfers ~1.3M HPAY back to the pair to satisfy the PancakeSwap K invariant (with a buffer for the 0.25% swap fee and the 4% HPAY transfer tax).
+
+<img width="1659" height="125" alt="image" src="https://github.com/user-attachments/assets/b6e77c66-6aad-4fb0-85e3-3db0b9214c9d" />
+
+7. **Profit extraction** — After the flash swap settles (pair lock released), the remaining ~57M HPAY is swapped via the PancakeSwap router through the path `HPAY -> BTCB -> WBNB`, netting ~25 BNB.
+
+<img width="1040" height="116" alt="image" src="https://github.com/user-attachments/assets/39df8ef7-e8ca-4d8a-9e6f-fe51c143a765" />
 
 ---
 
