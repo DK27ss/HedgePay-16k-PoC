@@ -37,17 +37,6 @@ function forceExit() external {
 }
 ```
 
-### What the fix should look like
-
-```solidity
-function forceExit() external {
-    uint256 amount = userStake[msg.sender];
-    require(amount > 0, "nothing staked");
-    userStake[msg.sender] = 0;            // <-- reset BEFORE transfer (CEI pattern)
-    stakingToken.transfer(msg.sender, amount);
-}
-```
-
 ---
 
 ## Exec Flow
