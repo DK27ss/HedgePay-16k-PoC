@@ -1,4 +1,4 @@
-<img width="1040" height="116" alt="image" src="https://github.com/user-attachments/assets/430b8526-c8e4-46b4-806e-e53875db1702" /># HedgePay-16k-PoC
+## HedgePay-16k-PoC
 
 >| Field | Value |
 >|-------|-------|
