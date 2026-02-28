@@ -3,13 +3,10 @@
 >| Field | Value |
 >|-------|-------|
 >| **Project** | HedgePay (HPAY) |
->| **Chain** | BNB Smart Chain (BSC) |
->| **Block** | 83,268,461 |
->| **Vulnerability** | Missing state reset in `forceExit()` |
->| **Category** | Repeated withdrawal / Logic bug |
+>| **Chain** | BSC |
+>| **Rootcause** | Missing state reset in `forceExit()` |
 >| **HPAY Drained** | ~54,073,798 HPAY (~92% of the staking pool) |
->| **Attacker Profit** | ~25 BNB |
->| **Initial Capital** | 0 (entirely flash-swap funded) |
+>| **Profit** | ~25 BNB |
 >
 >| Role | Address |
 >|------|---------|
